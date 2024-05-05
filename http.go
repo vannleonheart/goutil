@@ -25,9 +25,7 @@ func SendHttpRequest(method, url string, data interface{}, headers *map[string]s
 				url = fmt.Sprintf("%s?%s", url, *queryString)
 			}
 		}
-	case http.MethodPost:
-	case http.MethodPut:
-	case http.MethodPatch:
+	case http.MethodPost, http.MethodPut, http.MethodPatch:
 		if data != nil {
 			reqBody, err := generateRequestBody(data, headers)
 			if err != nil {
