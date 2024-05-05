@@ -56,7 +56,6 @@ func (r *RandomString) WithRandomizer(randomizer *rand.Rand) *RandomString {
 }
 
 func (r *RandomString) Generate(length int) string {
-
 	b := make([]byte, length)
 
 	for i := range b {
@@ -74,6 +73,8 @@ func (r *RandomString) GenerateRange(min, max int) string {
 	if max < min {
 		max = min
 	}
+
+	max = max - min
 
 	length := min + rand.Intn(max)
 
