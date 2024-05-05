@@ -65,6 +65,16 @@ func SendHttpRequest(method, url string, data interface{}, headers *map[string]s
 		return nil, err
 	}
 
+	if !isHttpResponseOk(resp) {
+		err = HttpResponseError{
+			Code:         resp.StatusCode,
+			Message:      resp.Status,
+			ResponseBody: &byteBody,
+		}
+
+		return nil, err
+	}
+
 	if result != nil {
 		if err = json.Unmarshal(byteBody, &result); err != nil {
 			return nil, err
@@ -146,4 +156,8 @@ func generateQueryString(data interface{}) (*string, error) {
 	encodedValues := values.Encode()
 
 	return &encodedValues, nil
+}
+
+func isHttpResponseOk(resp *http.Response) bool {
+	return resp.StatusCode >= 200 && resp.StatusCode < 300
 }
