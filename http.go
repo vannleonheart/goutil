@@ -65,20 +65,24 @@ func SendHttpRequest(method, url string, data interface{}, headers *map[string]s
 		return nil, err
 	}
 
-	if !isHttpResponseOk(resp) {
-		err = HttpResponseError{
-			Code:         resp.StatusCode,
-			Message:      resp.Status,
-			ResponseBody: &byteBody,
-		}
-
-		return nil, err
-	}
-
 	if result != nil {
 		if err = json.Unmarshal(byteBody, &result); err != nil {
-			return nil, err
+			result = nil
 		}
+	}
+
+	if !isHttpResponseOk(resp) {
+		e := HttpResponseError{
+			Code:            resp.StatusCode,
+			Message:         resp.Status,
+			ResponseBodyRaw: &byteBody,
+		}
+
+		if result != nil {
+			e.ResponseBody = result
+		}
+
+		return nil, e
 	}
 
 	return &byteBody, nil
