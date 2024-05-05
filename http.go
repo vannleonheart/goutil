@@ -152,7 +152,15 @@ func generateQueryString(data interface{}) (*string, error) {
 	values := url.Values{}
 
 	for k, v := range jsonData {
-		values.Add(k, fmt.Sprintf("%+v", v))
+		if v != nil {
+			if vStr := strings.TrimSpace(fmt.Sprintf("%v", v)); len(vStr) > 0 {
+				if !values.Has(k) {
+					values.Add(k, vStr)
+				} else {
+					values.Set(k, vStr)
+				}
+			}
+		}
 	}
 
 	encodedValues := values.Encode()
