@@ -62,6 +62,7 @@ jsonFilePath := "{your_json_file_path}"
 var output map[string]interface{}
 
 ptrByteFileContent, err := goutil.LoadJsonFile(jsonFilePath, &output)
+
 if err != nil {
     // handle error
 }
@@ -81,6 +82,22 @@ fmt.Println(output)
 <br />
 
 #### HTTP Request
+Generate Query String
+```go
+toQueryString := map[string]interface{}{
+	"page": 1,
+	"search": "keyword",
+}
+
+queryString, err := goutil.GenerateQueryString(toQueryString)
+
+if err != nil {
+    // handle error
+}
+
+// will print page=1&search=keyword
+fmt.Println(*queryString)
+```
 Sending Http Request
 ```go
 var result map[string]interface{}
@@ -88,11 +105,11 @@ var result map[string]interface{}
 targetUrl := "{your_target_url}"
 
 requestData := map[string]interface{}{
-	"page": 1
+	"page": 1,
 }
 
 requestHeaders := map[string]string{
-	"Content-Type": "application/json"
+	"Content-Type": "application/json",
 }
 
 ptrByteResponseBody, err := goutil.SendHttpRequest(http.MethodGet, targetUrl, &requestData, &requestHeaders, &result)

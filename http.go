@@ -16,7 +16,7 @@ func SendHttpRequest(method, url string, data interface{}, headers *map[string]s
 	switch method {
 	case http.MethodGet:
 		if data != nil {
-			queryString, err := generateQueryString(data)
+			queryString, err := GenerateQueryString(data)
 			if err != nil {
 				return nil, err
 			}
@@ -126,7 +126,7 @@ func generateRequestBody(data interface{}, headers *map[string]string) (*io.Read
 
 		result = bytes.NewBuffer(bytePostData)
 	case "application/x-www-form-urlencoded":
-		encodedData, err := generateQueryString(data)
+		encodedData, err := GenerateQueryString(data)
 		if err != nil {
 			return nil, err
 		}
@@ -137,7 +137,7 @@ func generateRequestBody(data interface{}, headers *map[string]string) (*io.Read
 	return &result, nil
 }
 
-func generateQueryString(data interface{}) (*string, error) {
+func GenerateQueryString(data interface{}) (*string, error) {
 	by, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
