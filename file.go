@@ -18,7 +18,7 @@ const (
 )
 
 func WriteStringToFile(data, path, fileName, ext, rotation string) error {
-	path = strings.TrimSpace(strings.Trim(path, "/"))
+	path = strings.TrimSpace(strings.TrimRight(path, "/"))
 
 	if len(path) <= 0 {
 		return errors.New("file path is empty")
