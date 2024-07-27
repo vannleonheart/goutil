@@ -148,3 +148,47 @@ Sending HTTP Delete Request
 ```go
 ptrByteResponseBody, err := goutil.SendHttpDelete(targetUrl, &requestHeaders, &result)
 ```
+#### Writing To File
+Write String To File
+<br />
+A new file will be created if the file does not exist. If the file already exists, the string will be appended to the file as new line.
+```go
+fileContent := "{your_file_content}"
+filePath := "{your_file_path}"
+fileName := "{your_file_name}"
+extension := "{your_file_extension}"
+rotation:= goutil.Daily
+
+err := goutil.WriteStringToFile(fileContent, filePath, fileName, extension, rotation)
+
+if err != nil {
+    // handle error
+}
+```
+Write JSON data to file
+<br />
+A new file will be created if the file does not exist. If the file already exists, the string will be appended to the file as new line.
+```go
+fileContent := map[string]interface{}{
+    "key1": "value1",
+    "key2": "value2",
+}
+filePath := "{your_file_path}"
+fileName := "{your_file_name}"
+extension := "{your_file_extension}"
+rotation:= goutil.Monthly
+
+err := goutil.WriteJsonToFile(fileContent, filePath, fileName, extension, rotation)
+
+if err != nil {
+    // handle error
+}
+```
+Constants for File Rotation
+```text
+const Hourly = "hourly"         // will append suffix with format yyyy-MM-dd-HH to filename
+const Daily = "daily"           // will append suffix with format yyyy-MM-dd to filename
+const Weekly = "weekly"         // will append suffix with format yyyy-MM-WW to filename
+const Monthly = "monthly"       // will append suffix with format yyyy-MM to filename
+const Yearly = "yearly"         // will append suffix with format yyyy to filename
+```
