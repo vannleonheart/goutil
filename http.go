@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func SendHttpRequest(method, url string, data interface{}, headers *map[string]string, result interface{}) (*[]byte, error) {
+func SendHttpRequest(method, url string, data interface{}, headers *map[string]string, result interface{}, cl *http.Client) (*[]byte, error) {
 	var requestBody io.Reader
 
 	switch method {
@@ -36,7 +36,9 @@ func SendHttpRequest(method, url string, data interface{}, headers *map[string]s
 		}
 	}
 
-	cl := &http.Client{}
+	if cl == nil {
+		cl = &http.Client{}
+	}
 
 	req, err := http.NewRequest(method, url, requestBody)
 	if err != nil {
@@ -86,24 +88,24 @@ func SendHttpRequest(method, url string, data interface{}, headers *map[string]s
 	return &byteBody, nil
 }
 
-func SendHttpGet(url string, params interface{}, headers *map[string]string, result interface{}) (*[]byte, error) {
-	return SendHttpRequest(http.MethodGet, url, params, headers, result)
+func SendHttpGet(url string, params interface{}, headers *map[string]string, result interface{}, cl *http.Client) (*[]byte, error) {
+	return SendHttpRequest(http.MethodGet, url, params, headers, result, cl)
 }
 
-func SendHttpPost(url string, data interface{}, headers *map[string]string, result interface{}) (*[]byte, error) {
-	return SendHttpRequest(http.MethodPost, url, data, headers, result)
+func SendHttpPost(url string, data interface{}, headers *map[string]string, result interface{}, cl *http.Client) (*[]byte, error) {
+	return SendHttpRequest(http.MethodPost, url, data, headers, result, cl)
 }
 
-func SendHttpPut(url string, data interface{}, headers *map[string]string, result interface{}) (*[]byte, error) {
-	return SendHttpRequest(http.MethodPut, url, data, headers, result)
+func SendHttpPut(url string, data interface{}, headers *map[string]string, result interface{}, cl *http.Client) (*[]byte, error) {
+	return SendHttpRequest(http.MethodPut, url, data, headers, result, cl)
 }
 
-func SendHttpPatch(url string, data interface{}, headers *map[string]string, result interface{}) (*[]byte, error) {
-	return SendHttpRequest(http.MethodPatch, url, data, headers, result)
+func SendHttpPatch(url string, data interface{}, headers *map[string]string, result interface{}, cl *http.Client) (*[]byte, error) {
+	return SendHttpRequest(http.MethodPatch, url, data, headers, result, cl)
 }
 
-func SendHttpDelete(url string, headers *map[string]string, result interface{}) (*[]byte, error) {
-	return SendHttpRequest(http.MethodDelete, url, nil, headers, result)
+func SendHttpDelete(url string, headers *map[string]string, result interface{}, cl *http.Client) (*[]byte, error) {
+	return SendHttpRequest(http.MethodDelete, url, nil, headers, result, cl)
 }
 
 func generateRequestBody(data interface{}, headers *map[string]string) (*io.Reader, error) {
